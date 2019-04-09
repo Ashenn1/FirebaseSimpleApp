@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -39,9 +41,14 @@ public class UploadActivity extends AppCompatActivity {
     //is the request code defied as instance variable.
     private final int PICK_FILE_REQUEST = 71;
 
-    //Firebase
+    //Firebase storage
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReference();
+
+    //Firbase database
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference DBRef = database.getReference();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,14 +112,23 @@ public class UploadActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("files/"+ filePath.getLastPathSegment());
+            final StorageReference ref = storageReference.child("files/"+ filePath.getLastPathSegment());
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(UploadActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri){
+                                    final String downloadUrl = uri.toString();
+                                    String key =  DBRef.child("Links").push().getKey();
+                                    DBRef.child("Links").child(key).setValue(downloadUrl);
+                                }
+                            });
                         }
+
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -128,7 +144,12 @@ public class UploadActivity extends AppCompatActivity {
                                     .getTotalByteCount());
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
+
+
                     });
+
+
+
         }
 
 
