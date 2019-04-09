@@ -33,11 +33,13 @@ public class RealTimeDataBase extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_time_data_base);
 
+        /*
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("message");
+        final DatabaseReference myRef = database.getReference("messages");
 
         final Button saveButton = findViewById(R.id.button_submit_data);
         myListView = findViewById(R.id.listView_Messages);
@@ -80,6 +82,7 @@ public class RealTimeDataBase extends AppCompatActivity {
         });
 
 
+*/
 
 
 

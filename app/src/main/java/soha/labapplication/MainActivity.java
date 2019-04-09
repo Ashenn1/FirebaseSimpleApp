@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            Log.d(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                           // for(int i=0;i<400;i++)
                             Log.d(TAG, token);
 
-                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
                     }
                 });
 
