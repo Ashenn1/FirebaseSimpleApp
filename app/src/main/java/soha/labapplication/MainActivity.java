@@ -75,6 +75,16 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         final Button DBButton = findViewById(R.id.DBButton);
+        final Button GoToUploadBtn = findViewById(R.id.GoToUploadBtn);
+
+        GoToUploadBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent i = new Intent(MainActivity.this , UploadActivity.class);
+                startActivity(i);
+            }
+
+        });
 
         DBButton.setOnClickListener(new View.OnClickListener() {
             @Override
