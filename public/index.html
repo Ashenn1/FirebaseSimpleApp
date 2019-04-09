@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/5.9.3/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/5.9.3/firebase-auth.js"></script>
+    <script defer src="/__/firebase/5.9.3/firebase-database.js"></script>
+    <script defer src="/__/firebase/5.9.3/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/5.9.3/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
+
+
+
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
+    </style>
+  </head>
+  <body>
+
+  	<h1 align="center" >Accessing firebase Database</h1>
+  	<br>
+  	<br>
+  	<!--
+    <div id="message">
+      <h2>Welcome</h2>
+      <h1>Firebase Hosting Setup Complete</h1>
+      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
+      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+    </div>
+    <p id="load">Firebase SDK Loading&hellip;</p>
+-->
+
+<!--
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        try {
+          let app = firebase.app();
+          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+        } catch (e) {
+          console.error(e);
+          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+        }
+      });
+    </script>
+
+-->
+
+    <script >
+    	var config = {
+	    apiKey: "AIzaSyCdc2gcOPpd4mlvhTSC_4ksbXN87DGcTUY",
+	    authDomain: "labapplication-78bf9.firebaseapp.com",
+	    databaseURL: "https://labapplication-78bf9.firebaseio.com/",
+	    storageBucket: "gs://labapplication-78bf9.appspot.com"
+ 	 };
+  	firebase.initializeApp(config);
+
+  	 // Get a reference to the database service
+ 	 var database = firebase.database();
+ 	 var IDs = 1;
+
+ 	 var body = document.getElementsByTagName("body")[0];
+
+ 	 var table = document.createElement("table");
+	 var tableBody = document.createElement("tbody");
+	 // sets the border attribute of tbl to 2;
+  	 table.setAttribute("border", "2");
+  	 table.setAttribute("cellpadding",10);
+
+ 	 var ref = firebase.database().ref("Links");
+ 	 document.location.reload();
+
+	  ref.on("value", function(snapshot) {
+
+	  snapshot.forEach(function(childSnapshot) {
+	  var childData = childSnapshot.val();
+	  console.log(childData);
+
+	  var row = document.createElement("tr");
+	  
+	  for(var col =0 ; col<2;col++){
+
+	  	if(col < 1){
+	  	var cell = document.createElement("td");
+	  	var a = document.createElement('a');
+
+	  	var linkText = document.createTextNode(childData);
+	  	a.title = childData;
+	  	a.href = childData;
+	  	a.setAttribute("id",IDs);
+	  	a.appendChild(linkText);
+	  	cell.appendChild(a);
+	  	row.appendChild(cell);
+	  	}
+	  	else{
+	  		var cell = document.createElement("td");
+	  		var btn = document.createElement("BUTTON");
+	  		btn.setAttribute("style", "padding:10px;");
+	  		btn.innerHTML = "Delete Link";
+	  		btn.setAttribute("id" , IDs);
+
+	  		btn.addEventListener("click" , function(){
+	  			//alert(--this.id);
+	  		var url = document.getElementById(--this.id);
+	  		alert(url.title);
+
+	  		var ref = firebase.database().ref().child('Links/')
+			   ref.once('value', s => {
+    if (s.exists()) {
+      // map through objects returned from Links and map through the objects
+      Object.keys(s.val()).map(k => {
+          // deleting the node which contains the url as value
+          if(s.val()[k]==url){
+            s.ref.child(k).remove();
+            document.location.reload();
+            //console.log(s.val()[k]);
+          }
+      });
+    }
+});
+	  		});
+	  		
+	  		cell.appendChild(btn);
+	  		row.appendChild(cell);
+	  	}
+	  	 IDs++;
+	  }
+
+	  tableBody.appendChild(row);
+	  
+	 });
+	  table.appendChild(tableBody);
+	  body.appendChild(table);
+	});
+
+    </script>
+
+
+  </body>
+</html>
